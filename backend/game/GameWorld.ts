@@ -1,5 +1,5 @@
 import { TileSet } from '../core/TileSet.ts'
-import { Grid } from '../core/Grid.ts'
+import { Cell, Grid } from '../core/Grid.ts'
 import { WfcEngine } from '../core/WfcEngine.ts'
 import { Position, Tile } from '../../shared/types.ts'
 import { VIEW_RADIUS } from '../../shared/constants.ts'
@@ -63,7 +63,7 @@ export class GameWorld {
   }
 
   public getSerializedChunk(center: Position, radius: number) {
-    const result = []
+    const result: { x: number; y: number; tile: Cell }[] = []
     for (let dx = -radius; dx <= radius; dx++) {
       for (let dy = -radius; dy <= radius; dy++) {
         const x = center.x + dx
