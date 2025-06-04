@@ -1,5 +1,5 @@
 import { TileSet } from '../core/TileSet.ts'
-import { Cell, Grid } from '../core/Grid.ts'
+import { Grid } from '../core/Grid.ts'
 import { WfcEngine } from '../core/WfcEngine.ts'
 import { Position, Tile } from '../../shared/types.ts'
 import { VIEW_RADIUS } from '../../shared/constants.ts'
@@ -42,12 +42,17 @@ export class GameWorld {
       }
     }
 
+    console.info(
+      `Loaded chunk at (${pos.x}, ${pos.y}) with ${tiles.length} tiles`
+    )
     return tiles
   }
 
   // Unloads only the tiles in the specified chunk that are not currently loaded by a player or beacon
   public unloadChunk(pos: Position) {
     const radius = VIEW_RADIUS + 1 // Unload one extra tile to ensure no adjacent tiles are left in the grid
+    let unloadedCount = 0
+
     for (let dx = -radius; dx <= radius; dx++) {
       for (let dy = -radius; dy <= radius; dy++) {
         const x = pos.x + dx
@@ -58,21 +63,33 @@ export class GameWorld {
         if (this.beaconManager.isLoadingTile(x, y)) continue
 
         this.grid.reInitialize(x, y)
+        unloadedCount++
       }
     }
+
+    console.info(
+      `Unloaded ${unloadedCount} tiles at chunk (${pos.x}, ${pos.y})`
+    )
   }
 
-  public getSerializedChunk(center: Position, radius: number) {
-    const result: { x: number; y: number; tile: Cell }[] = []
+  public getSerializedChunk(center: Position) {
+    const radius = VIEW_RADIUS
+    const result: { x: number; y: number; tile: Tile }[] = []
+
     for (let dx = -radius; dx <= radius; dx++) {
       for (let dy = -radius; dy <= radius; dy++) {
         const x = center.x + dx
         const y = center.y + dy
-        result.push({
-          x,
-          y,
-          tile: this.grid.get(x, y),
-        })
+
+        const cell = this.grid.get(x, y)
+
+        if (cell.length === 1) {
+          result.push({
+            x,
+            y,
+            tile: cell[0],
+          })
+        }
       }
     }
     return result

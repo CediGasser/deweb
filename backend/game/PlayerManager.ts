@@ -46,7 +46,7 @@ export class PlayerManager {
   public async updatePlayerPosition(
     id: string,
     position: Position
-  ): Promise<Tile[]> {
+  ): Promise<void> {
     const player = this.players.get(id)
     if (!player) {
       throw new Error(`Player with id ${id} does not exist`)
@@ -96,16 +96,14 @@ export class PlayerManager {
     }
 
     // load the chunk around the new position
-    const newTiles = await this.gameWorld.loadChunk(position)
+    await this.gameWorld.loadChunk(position)
 
     // unload the out of view tiles of the old position
-    await this.gameWorld.unloadChunk(oldPosition)
+    //await this.gameWorld.unloadChunk(oldPosition)
 
     // Update the player's position and last update time
     player.position = position
     player.lastUpdate = new Date()
-
-    return newTiles
   }
 
   // Check if the tile is in the view radius of any player

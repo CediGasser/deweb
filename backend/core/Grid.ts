@@ -20,10 +20,16 @@ export class Grid {
   }
 
   get(x: number, y: number): Cell {
+    if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
+      return []
+    }
     return this.cells[x][y]
   }
 
   set(x: number, y: number, options: Cell): void {
+    if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
+      return
+    }
     this.cells[x][y] = options
   }
 

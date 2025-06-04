@@ -3,12 +3,12 @@ import { cors } from 'hono/cors'
 import { getCookie, setCookie } from 'hono/cookie'
 import { GameWorld } from './game/GameWorld.ts'
 import { type RawTile, TileSet } from './core/TileSet.ts'
+import rawTiles from './core/directed_tiles.json' with { type: 'json' }
 
 const app = new Hono()
 app.use('*', cors({ origin: ['http://localhost:5173'], credentials: true }))
 
-const rawTiles: RawTile[] = []
-const tileSet = new TileSet(rawTiles)
+const tileSet = new TileSet(rawTiles as RawTile[])
 
 const gameWorld = new GameWorld(tileSet, 100, 100)
 
@@ -50,8 +50,8 @@ app.post('/api/create-player', (c) => {
   })
 })
 
-app.post('/api/load-chunk', (c) => {
-  const { x, y } = c.req.query()
+app.post('/api/load-chunk', async (c) => {
+  const { x, y } = (await c.req.json()) as { x: string, y: string }
   const playerId = getCookie(c, 'playerId')
 
   const position = {
@@ -65,9 +65,18 @@ app.post('/api/load-chunk', (c) => {
   }
 
   // Load the chunk around the player's position
-  gameWorld.playerManager.updatePlayerPosition(playerId, position)
+  try {
+    await gameWorld.playerManager.updatePlayerPosition(playerId, position)
+  } catch (error) {
+    return c.json({ error }, 500)
+  }
 
-  return c.text('Hello Hono!')
+  const tiles = await gameWorld.getSerializedChunk(position)
+
+  return c.json({
+    tiles,
+    playerPosition: position,
+  })
 })
 
 Deno.serve(app.fetch)

@@ -1,0 +1,122 @@
+[
+  {
+    "name": "blank.png",
+    "sockets": ["0", "0", "0", "0"],
+    "rotationVariants": [0]
+  },
+  {
+    "name": "pink_2_straight.png",
+    "sockets": ["p2", "0", "p2", "0"],
+    "rotationVariants": [90]
+  },
+  {
+    "name": "pink_2_end.png",
+    "sockets": ["0", "0", "p2", "0"],
+    "rotationVariants": [90, 270]
+  },
+  {
+    "name": "pink_2_curve.png",
+    "sockets": ["0", "p2", "p2", "0"],
+    "rotationVariants": [0, 90, 180, 270]
+  },
+  {
+    "name": "pink_2_t.png",
+    "sockets": ["p2", "0", "p2", "p2"],
+    "rotationVariants": [90, 270]
+  },
+  {
+    "name": "pink_2_cross.png",
+    "sockets": ["p2", "p2", "p2", "p2"],
+    "rotationVariants": [0]
+  },
+  {
+    "name": "pink_2to1.png",
+    "sockets": ["p2", "0", "p1", "0"],
+    "rotationVariants": [90, 270]
+  },
+  {
+    "name": "pink_1_t.png",
+    "sockets": ["0", "p1", "p1", "p1"],
+    "rotationVariants": [0, 180]
+  },
+  {
+    "name": "pink_1_cross.png",
+    "sockets": ["p1", "p1", "p1", "p1"],
+    "rotationVariants": [0]
+  },
+  {
+    "name": "blue_2_pink_2_cross.png",
+    "sockets": ["b2", "p2", "b2", "p2"],
+    "rotationVariants": [0]
+  },
+  {
+    "name": "blue_2_pink_2_curve.png",
+    "sockets": ["p2", "b2", "b2", "p2"],
+    "rotationVariants": [0, 90, 180, 270]
+  },
+  {
+    "name": "blue_1_pink_1_cross.png",
+    "sockets": ["p1", "b1", "p1", "b1"],
+    "rotationVariants": [90]
+  },
+  {
+    "name": "blue_1_pink_1_curve.png",
+    "sockets": ["p1", "p1", "b1", "b1"],
+    "rotationVariants": [0, 90, 180, 270]
+  },
+  {
+    "name": "blue_2_pink_1_cross.png",
+    "sockets": ["b2", "p1", "b2", "p1"],
+    "rotationVariants": [0]
+  },
+  {
+    "name": "blue_2_end.png",
+    "sockets": ["0", "0", "b2", "0"],
+    "rotationVariants": [0, 180]
+  },
+  {
+    "name": "blue_2_curve.png",
+    "sockets": ["b2", "0", "0", "b2"],
+    "rotationVariants": [0, 90, 180, 270]
+  },
+  {
+    "name": "blue_2_t.png",
+    "sockets": ["0", "b2", "b2", "b2"],
+    "rotationVariants": [90, 270]
+  },
+  {
+    "name": "blue_2_straight.png",
+    "sockets": ["b2", "0", "b2", "0"],
+    "rotationVariants": [0]
+  },
+  {
+    "name": "blue_2_cross.png",
+    "sockets": ["b2", "b2", "b2", "b2"],
+    "rotationVariants": [0]
+  },
+  {
+    "name": "blue_2to1.png",
+    "sockets": ["b1", "0", "b2", "0"],
+    "rotationVariants": [0, 180]
+  },
+  {
+    "name": "blue_1_t.png",
+    "sockets": ["b1", "b1", "b1", "0"],
+    "rotationVariants": [0, 180]
+  },
+  {
+    "name": "blue_1_straight.png",
+    "sockets": ["b1", "0", "b1", "0"],
+    "rotationVariants": [0]
+  },
+  {
+    "name": "blue_1_curve.png",
+    "sockets": ["0", "b1", "b1", "0"],
+    "rotationVariants": [0, 90, 180, 270]
+  },
+  {
+    "name": "blue_1_cross.png",
+    "sockets": ["b1", "b1", "b1", "b1"],
+    "rotationVariants": [0]
+  }
+]

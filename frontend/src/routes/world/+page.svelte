@@ -1,22 +1,62 @@
 <script lang="ts">
-  let playerInfo: null | any = $state(null)
+  import type {
+    Player,
+    Position,
+    SerializedTile,
+  } from '../../../../shared/types'
+  import WfcComponent from './WfcComponent.svelte'
+  import { setPlayerContext } from './PlayerContext'
+
+  let playerInfo: Player = $state({} as Player)
+  let tiles: any[] = $state([])
+
+  setPlayerContext(playerInfo)
 
   $effect(() => {
     // Fetch player info when the component mounts
-    fetchPlayerInfo().catch((error) => {
-      console.error('Error fetching player info:', error)
-    })
+    fetchPlayerInfo()
+      .then(() => {
+        // Fetch tiles when the component mounts
+        fetchTiles(playerInfo.position).catch((error) => {
+          console.error('Error fetching tiles:', error)
+        })
+      })
+      .catch((error) => {
+        console.error('Error fetching player info:', error)
+      })
   })
 
   async function fetchPlayerInfo() {
-    // Simulate an API call to fetch player info
-    const response = await fetch('/api/player-info', {
-      credentials: 'include',
-    })
+    const response = await fetch('/api/player-info')
+
     if (response.ok) {
-      playerInfo = await response.json()
+      const player = await response.json()
+      playerInfo.id = player.id
+      playerInfo.name = player.name
+      playerInfo.position = player.position as Position
     } else {
       throw new Error('Failed to fetch player info')
+    }
+  }
+
+  type LoadChunkResponse = {
+    tiles: SerializedTile[]
+    playerPosition: Position
+  }
+
+  async function fetchTiles(position: Position) {
+    const response = await fetch('/api/load-chunk', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(position),
+    })
+
+    if (response.ok) {
+      tiles = ((await response.json()) as LoadChunkResponse).tiles
+    } else {
+      throw new Error('Failed to fetch tiles')
     }
   }
 </script>
@@ -31,6 +71,8 @@
   {:else}
     <p>Loading player info...</p>
   {/if}
+
+  <WfcComponent {tiles} />
 </main>
 
 <style>

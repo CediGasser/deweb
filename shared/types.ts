@@ -1,8 +1,11 @@
+type Socket = string
+type TileType = 'default' | 'obstacle'
+
 export interface Tile {
   name: string
-  sockets: [string, string, string, string] // [top, right, bottom, left]
+  sockets: [Socket, Socket, Socket, Socket] // [top, right, bottom, left]
   rotation: number // 0, 90, 180, 270
-  type: string
+  type: TileType
 }
 
 export interface Position {
@@ -11,3 +14,11 @@ export interface Position {
 }
 
 export type RelativePosition = 'top' | 'right' | 'bottom' | 'left'
+
+export type SerializedTile = { x: number; y: number; tile: Tile }
+
+export type Player = {
+  id: string
+  name: string
+  position: Position
+}
