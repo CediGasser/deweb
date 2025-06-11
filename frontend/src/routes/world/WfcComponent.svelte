@@ -18,20 +18,18 @@
 </script>
 
 <div class="wrapper">
-  {#if posX && posY}
-    <div class="tile-container">
-      {#each tiles as tile (`${tile.x},${tile.y}`)}
-        {@const offsetX = (tile.x - posX) * TILE_SIZE}
-        {@const offsetY = (tile.y - posY) * TILE_SIZE}
-        <img
-          style="--rotation: {tile.tile
-            .rotation}deg; --offset-x: {offsetX}px; --offset-y: {offsetY}px;"
-          src="/wfc-images/{tile.tile.name}"
-          alt="({tile.x},{tile.y}) {tile.tile.name}"
-        />
-      {/each}
-    </div>
-  {/if}
+  <div class="tile-container">
+    {#each tiles as tile (`${tile.x},${tile.y}`)}
+      {@const offsetX = (tile.x - posX) * TILE_SIZE}
+      {@const offsetY = (tile.y - posY) * TILE_SIZE}
+      <img
+        style="--rotation: {tile.tile
+          .rotation}deg; --offset-x: {offsetX}px; --offset-y: {offsetY}px;"
+        src="/wfc-images/{tile.tile.name}"
+        alt="({tile.x},{tile.y}) {tile.tile.name}"
+      />
+    {/each}
+  </div>
 </div>
 
 <style>
@@ -40,7 +38,7 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 100vh;
+    height: 100%;
   }
 
   .tile-container {

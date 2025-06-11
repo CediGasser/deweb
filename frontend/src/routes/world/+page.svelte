@@ -26,6 +26,21 @@
       })
   })
 
+  async function handleKeydown(event: KeyboardEvent) {
+    if (event.key === 'ArrowUp' || event.key === 'w') {
+      playerInfo.position.y -= 1
+    } else if (event.key === 'ArrowDown' || event.key === 's') {
+      playerInfo.position.y += 1
+    } else if (event.key === 'ArrowLeft' || event.key === 'a') {
+      playerInfo.position.x -= 1
+    } else if (event.key === 'ArrowRight' || event.key === 'd') {
+      playerInfo.position.x += 1
+    }
+
+    // Fetch new tiles based on the updated position
+    await fetchTiles(playerInfo.position)
+  }
+
   async function fetchPlayerInfo() {
     const response = await fetch('/api/player-info')
 
@@ -60,6 +75,8 @@
     }
   }
 </script>
+
+<svelte:document onkeydown={handleKeydown} />
 
 <main>
   <h1>Game</h1>
