@@ -45,6 +45,7 @@
     width: 0;
     height: 0;
   }
+
   img {
     position: absolute;
     width: 64px;
@@ -52,5 +53,6 @@
     transform: translateX(var(--offset-x)) translateY(var(--offset-y))
       rotate(var(--rotation));
     image-rendering: pixelated;
+    transition: transform 0.1s ease-in-out;
   }
 </style>
