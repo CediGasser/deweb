@@ -1,4 +1,4 @@
-import type { Tile } from '../shared/types.js'
+import { Tile } from '../../shared/types.ts'
 
 export interface RawTile {
   name: string

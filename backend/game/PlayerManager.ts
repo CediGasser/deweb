@@ -48,10 +48,12 @@ export class PlayerManager {
     position: Position
   ): Promise<void> {
     const player = this.players.get(id)
+
     if (!player) {
       throw new Error(`Player with id ${id} does not exist`)
     }
-    const oldPosition = player.position
+
+    const oldPosition = structuredClone(player.position)
 
     // Throw an error if the new position is out of bounds
     const grid = this.gameWorld.getGrid()
@@ -94,12 +96,6 @@ export class PlayerManager {
         )}`
       )
     }
-
-    // load the chunk around the new position
-    await this.gameWorld.loadChunk(position)
-
-    // unload the out of view tiles of the old position
-    //await this.gameWorld.unloadChunk(oldPosition)
 
     // Update the player's position and last update time
     player.position = position

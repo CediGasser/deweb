@@ -64,12 +64,21 @@ app.post('/api/load-chunk', async (c) => {
     return c.json({ error: 'Invalid player ID or coordinates' }, 400)
   }
 
+  const oldPosition = structuredClone(gameWorld.playerManager.getPlayer(playerId)?.position) || { x: 0, y: 0 }
+
+  // load the chunk around the new position
+  await gameWorld.loadChunk(position)
+
   // Load the chunk around the player's position
   try {
     await gameWorld.playerManager.updatePlayerPosition(playerId, position)
   } catch (error) {
     return c.json({ error }, 500)
   }
+
+
+  // unload the out of view tiles of the old position
+  await gameWorld.unloadChunk(oldPosition)
 
   const tiles = await gameWorld.getSerializedChunk(position)
 
