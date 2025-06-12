@@ -1,5 +1,5 @@
 import { VIEW_RADIUS, IDLE_TIMEOUT } from '../../shared/constants.ts'
-import type { Position, Tile } from '../../shared/types.ts'
+import type { Position } from '../../shared/types.ts'
 import type { GameWorld } from './GameWorld.ts'
 
 interface Player {
@@ -43,10 +43,7 @@ export class PlayerManager {
     this.players.delete(id)
   }
 
-  public async updatePlayerPosition(
-    id: string,
-    position: Position
-  ): Promise<void> {
+  public updatePlayerPosition(id: string, position: Position): void {
     const player = this.players.get(id)
 
     if (!player) {
@@ -102,16 +99,6 @@ export class PlayerManager {
     player.lastUpdate = new Date()
   }
 
-  // Check if the tile is in the view radius of any player
-  public isLoadingTile(x: number, y: number): boolean {
-    const radius = VIEW_RADIUS
-
-    return this.getAllPlayers().some((player) => {
-      const pos = player.position
-      return Math.abs(pos.x - x) <= radius && Math.abs(pos.y - y) <= radius
-    })
-  }
-
   public getPlayer(id: string): Player | undefined {
     return this.players.get(id)
   }
@@ -131,6 +118,7 @@ export class PlayerManager {
       }
     }
   }
+
   public getPlayerPositions(): Record<string, Position | undefined> {
     const positions: Record<string, Position | undefined> = {}
     for (const [id, player] of this.players.entries()) {

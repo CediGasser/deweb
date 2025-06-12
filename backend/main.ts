@@ -4,20 +4,25 @@ import { getCookie, setCookie } from 'hono/cookie'
 import { GameWorld } from './game/GameWorld.ts'
 import { type RawTile, TileSet } from './core/TileSet.ts'
 import rawTiles from './core/directed_tiles.json' with { type: 'json' }
+import { PlayerManager } from "./game/PlayerManager.ts";
+import { GRID_HEIGHT, GRID_WIDTH } from "../shared/constants.ts";
 
 const app = new Hono()
 app.use('*', cors({ origin: ['http://localhost:5173'], credentials: true }))
 
 const tileSet = new TileSet(rawTiles as RawTile[])
 
-const gameWorld = new GameWorld(tileSet, 100, 100)
+let gameWorld = new GameWorld(tileSet, GRID_WIDTH, GRID_HEIGHT)
+const playerManager = new PlayerManager(gameWorld)
+
+gameWorld.generateWorld()
 
 app.get('/api/player-info', (c) => {
   const playerId = getCookie(c, 'playerId')
   if (!playerId) {
     return c.json({ error: 'PlayerID Cookie not set' }, 404)
   }
-  const player = gameWorld.playerManager.getPlayer(playerId)
+  const player = playerManager.getPlayer(playerId)
   if (!player) {
     return c.json({ error: 'Player not found' }, 404)
   }
@@ -25,6 +30,15 @@ app.get('/api/player-info', (c) => {
     id: player.id,
     name: player.name,
     position: player.position,
+  })
+})
+
+app.post('/api/create-world', (c) => {
+  gameWorld = new GameWorld(tileSet, GRID_WIDTH, GRID_HEIGHT)
+  gameWorld.generateWorld()
+
+  return c.json({
+    message: 'World created successfully',
   })
 })
 
@@ -36,7 +50,7 @@ app.post('/api/create-player', (c) => {
     name = `Player-${id.slice(0, 8)}`
   }
 
-  const position = gameWorld.playerManager.addPlayer(id, name)
+  const position = playerManager.addPlayer(id, name)
 
   setCookie(c, 'playerId', id, {
     maxAge: 60 * 60 * 24 * 30, // 30 days
@@ -64,23 +78,14 @@ app.post('/api/load-chunk', async (c) => {
     return c.json({ error: 'Invalid player ID or coordinates' }, 400)
   }
 
-  const oldPosition = structuredClone(gameWorld.playerManager.getPlayer(playerId)?.position) || { x: 0, y: 0 }
-
   // load the chunk around the new position
-  await gameWorld.loadChunk(position)
+  const tiles = await gameWorld.getChunk(position)
 
-  // Load the chunk around the player's position
   try {
-    await gameWorld.playerManager.updatePlayerPosition(playerId, position)
+    await playerManager.updatePlayerPosition(playerId, position)
   } catch (error) {
     return c.json({ error }, 500)
   }
-
-
-  // unload the out of view tiles of the old position
-  await gameWorld.unloadChunk(oldPosition)
-
-  const tiles = await gameWorld.getSerializedChunk(position)
 
   return c.json({
     tiles,

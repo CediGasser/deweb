@@ -1,9 +1,11 @@
 import { Grid } from './Grid.ts'
 import { Position, RelativePosition } from '../../shared/types.ts'
-import { sleep } from '../../shared/utils.ts'
+import { EntropyQueue } from './EntropyQueue.ts'
 
 export class WfcEngine {
-  constructor(private grid: Grid, private animationDelay = 0) {}
+  private entropyQueue = new EntropyQueue()
+
+  constructor(private grid: Grid) {}
 
   getNeighbors({
     x,
@@ -18,15 +20,12 @@ export class WfcEngine {
   }
 
   reduce(position: Position): void {
-    const currentOptions = this.grid.get(position.x, position.y)
+    const options = this.grid.get(position.x, position.y)
     const neighbors = this.getNeighbors(position)
 
-    // Collect all possible options based on current neighbors
-    const possibleOptions: typeof currentOptions = []
-
     // For each tile in the full tile set (assume grid.tileSet exists)
-    for (const tile of this.grid.initialOptions) {
-      const isValid = Object.entries(neighbors).every(([dir, pos]) => {
+    const filtered = options.filter((tile) => {
+      return Object.entries(neighbors).every(([dir, pos]) => {
         if (!pos) return true // Handle edges where neighbor doesn't exist
         const neighborOptions = this.grid.get(pos.x, pos.y)
         const dirIdx = { top: 0, right: 1, bottom: 2, left: 3 }[
@@ -37,66 +36,62 @@ export class WfcEngine {
           (n) => n.sockets[oppIdx] === tile.sockets[dirIdx]
         )
       })
-      if (isValid) possibleOptions.push(tile)
-    }
+    })
 
-    // Only update if options actually changed
-    if (
-      possibleOptions.length !== currentOptions.length ||
-      !possibleOptions.every((t) => currentOptions.includes(t))
-    ) {
-      this.grid.set(position.x, position.y, possibleOptions)
-    }
+    this.grid.set(position.x, position.y, filtered)
   }
 
-  async propagate(startPositions: Position[]): Promise<void> {
+  propagate(startPositions: Position[]): void {
     const stack = [...startPositions]
 
     while (stack.length) {
       const pos = stack.pop()!
-      const before = this.grid.get(pos.x, pos.y).length
+      const entropyBefore = this.grid.get(pos.x, pos.y).length
       this.reduce(pos)
-      const after = this.grid.get(pos.x, pos.y).length
+      const entropyAfter = this.grid.get(pos.x, pos.y).length
 
-      if (before !== after) {
+      if (entropyAfter === 0) {
+        const msg = `No valid options left for position (${pos.x}, ${pos.y}).`
+        console.error(msg)
+        throw new Error(msg)
+      }
+
+      if (entropyAfter < entropyBefore) {
+        // Update lowest entropy positions
+        if (entropyAfter > 1) {
+          this.entropyQueue.update(pos, entropyAfter)
+        }
+
         // Only propagate if options were reduced or increased
         const neighbors = Object.values(this.getNeighbors(pos)).filter(
           (n) => n && this.grid.get(n.x, n.y).length > 1 // Ensure neighbor is not already collapsed
         )
         stack.push(...(neighbors as Position[]))
       }
-
-      if (this.animationDelay) await sleep(this.animationDelay)
     }
   }
 
-  async collapse(positions: Position[]): Promise<void> {
-    const stack = positions.toSorted((a, b) => {
-      const aOptions = this.grid.get(a.x, a.y).length
-      const bOptions = this.grid.get(b.x, b.y).length
-      return bOptions - aOptions // Sort by number of options (descending)
-    })
-
-    while (stack.length) {
-      const pos = stack.pop()!
+  collapse(): void {
+    for (
+      let pos: Position | null = {
+        x: Math.floor(this.grid.width / 2),
+        y: Math.floor(this.grid.height / 2),
+      };
+      pos !== null;
+      pos = this.entropyQueue.extractRandomLowestEntropy()
+    ) {
       const options = this.grid.get(pos.x, pos.y)
       const choice = options[Math.floor(Math.random() * options.length)]
       this.grid.set(pos.x, pos.y, [choice])
+
+      console.info(`Collapsed position (${pos.x}, ${pos.y})`)
 
       const neighbors = Object.values(this.getNeighbors(pos)).filter(
         (neighbor) =>
           neighbor && this.grid.get(neighbor.x, neighbor.y).length > 1
       )
 
-      await this.propagate(neighbors) // stack of positions to propagate
+      this.propagate(neighbors) // stack of positions to propagate
     }
-  }
-
-  async unCollapse(positions: Position[]): Promise<void> {
-    for (const pos of positions) {
-      this.grid.reInitialize(pos.x, pos.y)
-    }
-
-    await this.propagate(positions) // Re-propagate from the collapsed position
   }
 }

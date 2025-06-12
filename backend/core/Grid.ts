@@ -71,4 +71,13 @@ export class Grid {
   isCollapsed(x: number, y: number): boolean {
     return this.get(x, y).length === 1
   }
+
+  // Iterator to traverse the grid
+  *[Symbol.iterator](): IterableIterator<[number, number, Cell]> {
+    for (let x = 0; x < this.width; x++) {
+      for (let y = 0; y < this.height; y++) {
+        yield [x, y, this.get(x, y)]
+      }
+    }
+  }
 }
