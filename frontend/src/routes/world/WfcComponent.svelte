@@ -29,6 +29,15 @@
         alt="({tile.x},{tile.y}) {tile.tile.name}"
       />
     {/each}
+    <!-- Players -->
+    {#if player}
+      <img
+        class="player"
+        style="--offset-x: 0px; --offset-y: 0px;"
+        src="/player.png"
+        alt="Player"
+      />
+    {/if}
   </div>
 </div>
 
@@ -54,5 +63,9 @@
       rotate(var(--rotation));
     image-rendering: pixelated;
     transition: transform 0.1s ease-in-out;
+  }
+
+  img.player {
+    z-index: 1;
   }
 </style>
