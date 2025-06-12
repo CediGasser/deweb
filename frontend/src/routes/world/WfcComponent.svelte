@@ -1,12 +1,13 @@
 <script lang="ts">
-  import type { SerializedTile } from '../../../../shared/types'
+  import type { Player, SerializedTile } from '../../../../shared/types'
   import { TILE_SIZE } from '../../../../shared/constants'
   import { getPlayerContext } from './PlayerContext'
 
   interface Props {
     tiles: SerializedTile[]
+    otherPlayers: Player[]
   }
-  const { tiles }: Props = $props()
+  const { tiles, otherPlayers }: Props = $props()
 
   const player = getPlayerContext()
 
@@ -38,6 +39,16 @@
         alt="Player"
       />
     {/if}
+    {#each otherPlayers as otherPlayer}
+      {@const offsetX = (otherPlayer.position.x - posX) * TILE_SIZE}
+      {@const offsetY = (otherPlayer.position.y - posY) * TILE_SIZE}
+      <img
+        class="other-player"
+        style="--rotation: 0deg; --offset-x: {offsetX}px; --offset-y: {offsetY}px;"
+        src="/player.png"
+        alt="Other Player"
+      />
+    {/each}
   </div>
 </div>
 

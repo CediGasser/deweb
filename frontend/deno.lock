@@ -4,6 +4,7 @@
     "npm:@sveltejs/adapter-node@^5.2.12": "5.2.12_@sveltejs+kit@2.21.1__@sveltejs+vite-plugin-svelte@5.0.3___svelte@5.33.11____acorn@8.14.1___vite@6.3.5____picomatch@4.0.2__svelte@5.33.11___acorn@8.14.1__vite@6.3.5___picomatch@4.0.2__acorn@8.14.1_rollup@4.41.1_@sveltejs+vite-plugin-svelte@5.0.3__svelte@5.33.11___acorn@8.14.1__vite@6.3.5___picomatch@4.0.2_svelte@5.33.11__acorn@8.14.1_vite@6.3.5__picomatch@4.0.2",
     "npm:@sveltejs/kit@^2.16.0": "2.21.1_@sveltejs+vite-plugin-svelte@5.0.3__svelte@5.33.11___acorn@8.14.1__vite@6.3.5___picomatch@4.0.2_svelte@5.33.11__acorn@8.14.1_vite@6.3.5__picomatch@4.0.2_acorn@8.14.1",
     "npm:@sveltejs/vite-plugin-svelte@5": "5.0.3_svelte@5.33.11__acorn@8.14.1_vite@6.3.5__picomatch@4.0.2",
+    "npm:socket.io-client@^4.8.1": "4.8.1",
     "npm:svelte-check@4": "4.2.1_svelte@5.33.11__acorn@8.14.1_typescript@5.8.3",
     "npm:svelte@5": "5.33.11_acorn@8.14.1",
     "npm:typescript@5": "5.8.3",
@@ -219,6 +220,9 @@
     "@rollup/rollup-win32-x64-msvc@4.41.1": {
       "integrity": "sha512-Wq2zpapRYLfi4aKxf2Xff0tN+7slj2d4R87WEzqw7ZLsVvO5zwYCIuEGSZYiK41+GlwUo1HiR+GdkLEJnCKTCw=="
     },
+    "@socket.io/component-emitter@3.1.2": {
+      "integrity": "sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA=="
+    },
     "@sveltejs/acorn-typescript@1.0.5_acorn@8.14.1": {
       "integrity": "sha512-IwQk4yfwLdibDlrXVE04jTZYlLnwsTT2PIOQQGNLWfjavGifnk1JD1LcZjZaBTRcxZu2FfPfNLOE04DSu9lqtQ==",
       "dependencies": [
@@ -259,7 +263,7 @@
       "integrity": "sha512-J/Nmb2Q2y7mck2hyCX4ckVHcR5tu2J+MtBEQqpDrrgELZ2uvraQcK/ioCV61AqkdXFgriksOKIceDcQmqnGhVw==",
       "dependencies": [
         "@sveltejs/vite-plugin-svelte",
-        "debug",
+        "debug@4.4.1",
         "svelte",
         "vite"
       ]
@@ -268,7 +272,7 @@
       "integrity": "sha512-MCFS6CrQDu1yGwspm4qtli0e63vaPCehf6V7pIMP15AsWgMKrqDGCPFF/0kn4SP0ii4aySu4Pa62+fIRGFMjgw==",
       "dependencies": [
         "@sveltejs/vite-plugin-svelte-inspector",
-        "debug",
+        "debug@4.4.1",
         "deepmerge",
         "kleur",
         "magic-string",
@@ -310,6 +314,12 @@
     "cookie@0.6.0": {
       "integrity": "sha512-U71cyTamuh1CRNCfpGY6to28lxvNwPG4Guz/EVjgf3Jmzv0vlDp1atT9eS5dDjMYHucpHbWns6Lwf3BKz6svdw=="
     },
+    "debug@4.3.7": {
+      "integrity": "sha512-Er2nc/H7RrMXZBFCEim6TCmMk02Z8vLC2Rbi1KEBggpo0fS6l0S1nnapwmIi3yW/+GOJap1Krg4w0Hg80oCqgQ==",
+      "dependencies": [
+        "ms"
+      ]
+    },
     "debug@4.4.1": {
       "integrity": "sha512-KcKCqiftBJcZr++7ykoDIEwSa3XWowTfNPo92BYxjXiyYEVrUQh2aLyhxBCwww+heortUFxEJYcRzosstTEBYQ==",
       "dependencies": [
@@ -321,6 +331,19 @@
     },
     "devalue@5.1.1": {
       "integrity": "sha512-maua5KUiapvEwiEAe+XnlZ3Rh0GD+qI1J/nb9vrJc3muPXvcF/8gXYTWF76+5DAqHyDUtOIImEuo0YKE9mshVw=="
+    },
+    "engine.io-client@6.6.3": {
+      "integrity": "sha512-T0iLjnyNWahNyv/lcjS2y4oE358tVS/SYQNxYXGAJ9/GLgH4VCvOQ/mhTjqU88mLZCQgiG8RIegFHYCdVC+j5w==",
+      "dependencies": [
+        "@socket.io/component-emitter",
+        "debug@4.3.7",
+        "engine.io-parser",
+        "ws",
+        "xmlhttprequest-ssl"
+      ]
+    },
+    "engine.io-parser@5.2.3": {
+      "integrity": "sha512-HqD3yTBfnBxIrbnM1DoD6Pcq8NECnh8d4As1Qgh0z5Gg3jRRIqijury0CL3ghu/edArpUYiYqQiDUQBIs4np3Q=="
     },
     "esbuild@0.25.5": {
       "integrity": "sha512-P8OtKZRv/5J5hhz0cUAdu/cLuPIKXpQl1R9pZtvmHWQvrAUVd0UNIPT4IB4W3rNOqVO0rlqHmCIbSwxh/c9yUQ==",
@@ -499,6 +522,22 @@
         "totalist"
       ]
     },
+    "socket.io-client@4.8.1": {
+      "integrity": "sha512-hJVXfu3E28NmzGk8o1sHhN3om52tRvwYeidbj7xKy2eIIse5IoKX3USlS6Tqt3BHAtflLIkCQBkzVrEEfWUyYQ==",
+      "dependencies": [
+        "@socket.io/component-emitter",
+        "debug@4.3.7",
+        "engine.io-client",
+        "socket.io-parser"
+      ]
+    },
+    "socket.io-parser@4.2.4": {
+      "integrity": "sha512-/GbIKmo8ioc+NIWIhwdecY0ge+qVBSMdgxGygevmdHj24bsfgtCmcUUcQ5ZzcylGFHsN3k4HB4Cgkl96KVnuew==",
+      "dependencies": [
+        "@socket.io/component-emitter",
+        "debug@4.3.7"
+      ]
+    },
     "source-map-js@1.2.1": {
       "integrity": "sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA=="
     },
@@ -567,6 +606,12 @@
         "vite"
       ]
     },
+    "ws@8.17.1": {
+      "integrity": "sha512-6XQFvXTkbfUOZOKKILFG1PDK2NDQs4azKQl26T0YS5CxqWLgXajbPZ+h4gZekJyRqFU8pvnbAbbs/3TgRPy+GQ=="
+    },
+    "xmlhttprequest-ssl@2.1.2": {
+      "integrity": "sha512-TEU+nJVUUnA4CYJFLvK5X9AOeH4KvDvhIfm0vV1GaQRtchnG0hgK5p8hw/xjv8cunWYCsiPCSDzObPyhEwq3KQ=="
+    },
     "zimmerframe@1.1.2": {
       "integrity": "sha512-rAbqEGa8ovJy4pyBxZM70hg4pE6gDgaQ0Sl9M3enG3I0d6H4XSAM3GeNGLKnsBpuijUow064sf7ww1nutC5/3w=="
     }
@@ -577,6 +622,7 @@
         "npm:@sveltejs/adapter-node@^5.2.12",
         "npm:@sveltejs/kit@^2.16.0",
         "npm:@sveltejs/vite-plugin-svelte@5",
+        "npm:socket.io-client@^4.8.1",
         "npm:svelte-check@4",
         "npm:svelte@5",
         "npm:typescript@5",

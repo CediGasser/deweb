@@ -6,9 +6,26 @@
   } from '../../../../shared/types'
   import WfcComponent from './WfcComponent.svelte'
   import { setPlayerContext } from './PlayerContext'
+  import { io } from 'socket.io-client'
+  import { PUBLIC_BACKEND_URL } from '$env/static/public'
 
   let playerInfo: Player = $state({} as Player)
   let tiles: any[] = $state([])
+  let otherPlayers: Player[] = $state([])
+
+  const socket = io(PUBLIC_BACKEND_URL)
+
+  socket.on('playerMoved', (data: Player) => {
+    const playerIndex = otherPlayers.findIndex((p) => p.id === data.id)
+    if (data.id === playerInfo.id) {
+      return // Ignore own movements
+    } else if (playerIndex !== -1) {
+      otherPlayers[playerIndex].position = data.position
+    } else {
+      // If the player is not found, add them to the list
+      otherPlayers.push(data)
+    }
+  })
 
   setPlayerContext(playerInfo)
 
@@ -89,7 +106,7 @@
     <p>Loading player info...</p>
   {/if}
 
-  <WfcComponent {tiles} />
+  <WfcComponent {otherPlayers} {tiles} />
 </main>
 
 <style>

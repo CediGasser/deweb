@@ -6,6 +6,8 @@ import { type RawTile, TileSet } from './core/TileSet.ts'
 import rawTiles from './core/directed_tiles.json' with { type: 'json' }
 import { PlayerManager } from "./game/PlayerManager.ts";
 import { GRID_HEIGHT, GRID_WIDTH } from "../shared/constants.ts";
+import { Server } from "https://deno.land/x/socket_io@0.2.1/mod.ts";
+
 
 const app = new Hono()
 app.use('*', cors({ origin: ['http://localhost:5173'], credentials: true }))
@@ -16,6 +18,24 @@ let gameWorld = new GameWorld(tileSet, GRID_WIDTH, GRID_HEIGHT)
 const playerManager = new PlayerManager(gameWorld)
 
 gameWorld.generateWorld()
+
+// Initialize Socket.IO server
+const io = new Server({
+  cors: {
+    origin: ['http://localhost:5173'],
+    methods: ['GET', 'POST'],
+    credentials: true,
+  },
+})
+
+// Handle Socket.IO connections
+io.on('connection', (socket) => {
+  console.info('📶 client connected:', socket.id);
+
+  socket.on('disconnect', (reason) => {
+    console.log('❌ disconnected', socket.id, reason);
+  });
+});
 
 app.get('/api/player-info', (c) => {
   const playerId = getCookie(c, 'playerId')
@@ -87,10 +107,17 @@ app.post('/api/load-chunk', async (c) => {
     return c.json({ error }, 500)
   }
 
+  // Emit the player movement to all connected clients
+  const player = playerManager.getPlayer(playerId)
+  io.emit('playerMoved', player)
+
   return c.json({
     tiles,
     playerPosition: position,
   })
 })
 
-Deno.serve(app.fetch)
+// Wrapping the Hono app with Socket.IO handler
+const handler = io.handler(app.fetch)
+
+Deno.serve(handler)
