@@ -1,5 +1,5 @@
-type Socket = string
-type TileType = 'default' | 'obstacle'
+export type Socket = string
+export type TileType = 'default' | 'obstacle'
 
 export interface Tile {
   name: string

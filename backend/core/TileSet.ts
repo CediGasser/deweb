@@ -1,4 +1,4 @@
-import { Tile } from '../../shared/types.ts'
+import { Socket, Tile } from '../../shared/types.ts'
 
 export interface RawTile {
   name: string
@@ -16,9 +16,9 @@ export class TileSet {
 
   private generateVariants(raw: RawTile[]): Tile[] {
     const rotated = (
-      s: [string, string, string, string],
+      s: [Socket, Socket, Socket, Socket],
       r: number
-    ): [string, string, string, string] => {
+    ): [Socket, Socket, Socket, Socket] => {
       const [T, R, B, L] = s
       switch (r) {
         case 90:
@@ -38,7 +38,7 @@ export class TileSet {
           name,
           sockets: rotated(sockets, r),
           rotation: r,
-          type,
+          type: type as Tile['type'],
         }))
     )
   }
