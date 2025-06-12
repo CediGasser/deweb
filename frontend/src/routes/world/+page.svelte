@@ -96,17 +96,11 @@
 <svelte:document onkeydown={handleKeydown} />
 
 <main>
-  <h1>Game</h1>
-  <p>Welcome to the game world!</p>
-  {#if playerInfo}
-    <p>Player Name: {playerInfo.name}</p>
-    <p>Player Id: {playerInfo.id}</p>
-    <p>Player Position: {JSON.stringify(playerInfo.position)}</p>
-  {:else}
-    <p>Loading player info...</p>
-  {/if}
-
   <WfcComponent {otherPlayers} {tiles} />
+  <div class="stats">
+    <h1>World</h1>
+    <p>({playerInfo.position?.x}, {playerInfo.position?.y})</p>
+  </div>
 </main>
 
 <style>
@@ -121,5 +115,18 @@
     margin-bottom: 1.5rem;
     font-size: 2rem;
     text-align: center;
+  }
+  .stats {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 1rem;
+    border-radius: 8px;
+    z-index: 10;
+  }
+  p {
+    margin: 0.5rem 0;
   }
 </style>

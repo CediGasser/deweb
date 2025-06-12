@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Player, SerializedTile } from '../../../../shared/types'
-  import { TILE_SIZE } from '../../../../shared/constants'
+  import { TILE_SIZE, VIEW_RADIUS } from '../../../../shared/constants'
   import { getPlayerContext } from './PlayerContext'
 
   interface Props {
@@ -14,15 +14,29 @@
   let posX = $derived(player?.position?.x || 0)
   let posY = $derived(player?.position?.y || 0)
 
+  function isInView({ position }: Player): boolean {
+    const radius = VIEW_RADIUS - 1 // Adjusted for margin
+    return (
+      position.x >= posX - radius &&
+      position.x <= posX + radius &&
+      position.y >= posY - radius &&
+      position.y <= posY + radius
+    )
+  }
+
   $inspect(tiles)
   $inspect(player)
 </script>
 
-<div class="wrapper">
+<div
+  class="wrapper"
+  style="--height: {TILE_SIZE * VIEW_RADIUS * 2 + TILE_SIZE}px; 
+  --width: {TILE_SIZE * VIEW_RADIUS * 2 + TILE_SIZE}px;"
+>
   <div class="tile-container">
     {#each tiles as tile (`${tile.x},${tile.y}`)}
-      {@const offsetX = (tile.x - posX) * TILE_SIZE}
-      {@const offsetY = (tile.y - posY) * TILE_SIZE}
+      {@const offsetX = (tile.x - posX) * TILE_SIZE - TILE_SIZE / 2}
+      {@const offsetY = (tile.y - posY) * TILE_SIZE - TILE_SIZE / 2}
       <img
         style="--rotation: {tile.tile
           .rotation}deg; --offset-x: {offsetX}px; --offset-y: {offsetY}px;"
@@ -39,9 +53,11 @@
         alt="Player"
       />
     {/if}
-    {#each otherPlayers as otherPlayer}
-      {@const offsetX = (otherPlayer.position.x - posX) * TILE_SIZE}
-      {@const offsetY = (otherPlayer.position.y - posY) * TILE_SIZE}
+    {#each otherPlayers.filter(isInView) as otherPlayer}
+      {@const offsetX =
+        (otherPlayer.position.x - posX) * TILE_SIZE - TILE_SIZE / 2}
+      {@const offsetY =
+        (otherPlayer.position.y - posY) * TILE_SIZE - TILE_SIZE / 2}
       <img
         class="other-player"
         style="--rotation: 0deg; --offset-x: {offsetX}px; --offset-y: {offsetY}px;"
@@ -49,6 +65,7 @@
         alt="Other Player"
       />
     {/each}
+    <div class="vignete-overlay"></div>
   </div>
 </div>
 
@@ -57,13 +74,37 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
     height: 100%;
   }
 
   .tile-container {
     width: 0;
     height: 0;
+  }
+
+  .vignete-overlay {
+    position: absolute;
+    --intensity: 60%;
+    background: linear-gradient(to top, black, transparent var(--intensity)),
+      linear-gradient(to bottom, black, transparent var(--intensity)),
+      linear-gradient(to left, black, transparent var(--intensity)),
+      linear-gradient(to right, black, transparent var(--intensity));
+    background-repeat: no-repeat;
+    background-size:
+      100% 100%,
+      100% 100%,
+      100% 100%,
+      100% 100%;
+    background-position: top, bottom, left, right;
+
+    border: 500px solid black;
+
+    width: var(--width);
+    height: var(--height);
+    transform: translateX(-50%) translateY(-50%);
+
+    pointer-events: none;
+    z-index: 2;
   }
 
   img {
@@ -74,6 +115,7 @@
       rotate(var(--rotation));
     image-rendering: pixelated;
     transition: transform 0.1s ease-in-out;
+    z-index: 0;
   }
 
   img.player {

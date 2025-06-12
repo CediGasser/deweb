@@ -51,7 +51,7 @@
 <main>
   <h1>Glitchy World</h1>
   {#await playerInfo then player}
-    <p>Welcome, <span class="player-name">{player.name}</span>!</p>
+    <p>Welcome back, <span class="player-name">{player.name}</span>!</p>
     <p>Ready to continue your adventure?</p>
     <button onclick={startGame}>Continue</button>
   {:catch}
@@ -71,15 +71,14 @@
   main {
     max-width: 350px;
     margin: 100px auto;
+    background-color: #2a2a2a;
     padding: 2rem;
-    background: #f8f8f8;
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   }
   h1 {
     margin-bottom: 1.5rem;
     font-size: 2rem;
-    color: #333;
   }
   label {
     display: block;
