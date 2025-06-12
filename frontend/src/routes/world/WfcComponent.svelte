@@ -46,11 +46,13 @@
     {/each}
     <!-- Players -->
     {#if player}
+      {@const offsetX = -TILE_SIZE / 2}
+      {@const offsetY = -TILE_SIZE / 2}
       <img
         class="player"
-        style="--offset-x: 0px; --offset-y: 0px;"
+        style="--rotation: 0deg; --offset-x: {offsetX}px; --offset-y: {offsetY}px;"
         src="/player.png"
-        alt="Player"
+        alt="Player {player.name}"
       />
     {/if}
     {#each otherPlayers.filter(isInView) as otherPlayer}
