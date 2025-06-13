@@ -3,7 +3,8 @@ import { cors } from 'hono/cors'
 import { getCookie, setCookie } from 'hono/cookie'
 import { GameWorld } from './game/GameWorld.ts'
 import { type RawTile, TileSet } from './core/TileSet.ts'
-import rawTiles from './core/directed_tiles.json' with { type: 'json' }
+import directedTiles from './core/directed_tiles.json' with { type: 'json' }
+import overworldTiles from './core/overworld_tiles.json' with { type: 'json' }
 import { PlayerManager } from "./game/PlayerManager.ts";
 import { GRID_HEIGHT, GRID_WIDTH } from "../shared/constants.ts";
 import { Server } from "https://deno.land/x/socket_io@0.2.1/mod.ts";
@@ -12,7 +13,8 @@ import { Server } from "https://deno.land/x/socket_io@0.2.1/mod.ts";
 const app = new Hono()
 app.use('*', cors({ origin: ['http://localhost:5173'], credentials: true }))
 
-const tileSet = new TileSet(rawTiles as RawTile[])
+//const tileSet = new TileSet(directedTiles as RawTile[])
+const tileSet = new TileSet(overworldTiles as RawTile[])
 
 let gameWorld = new GameWorld(tileSet, GRID_WIDTH, GRID_HEIGHT)
 const playerManager = new PlayerManager(gameWorld)

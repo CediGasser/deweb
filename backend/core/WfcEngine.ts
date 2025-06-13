@@ -1,11 +1,15 @@
 import { Grid } from './Grid.ts'
-import { Position, RelativePosition } from '../../shared/types.ts'
+import { Position, RelativePosition, Socket } from '../../shared/types.ts'
 import { EntropyQueue } from './EntropyQueue.ts'
 
 export class WfcEngine {
   private entropyQueue = new EntropyQueue()
 
   constructor(private grid: Grid) {}
+
+  private invertSocket(socket: Socket): Socket {
+    return socket.split('-').reverse().join('-')
+  }
 
   getNeighbors({
     x,
@@ -33,7 +37,7 @@ export class WfcEngine {
         ]
         const oppIdx = (dirIdx + 2) % 4
         return neighborOptions.some(
-          (n) => n.sockets[oppIdx] === tile.sockets[dirIdx]
+          (n) => tile.sockets[dirIdx] === this.invertSocket(n.sockets[oppIdx])
         )
       })
     })
