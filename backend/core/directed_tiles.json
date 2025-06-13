@@ -7,42 +7,50 @@
   {
     "name": "pink_2_straight.png",
     "sockets": ["p2", "0", "p2", "0"],
-    "rotationVariants": [90]
+    "rotationVariants": [90],
+    "type": "obstacle"
   },
   {
     "name": "pink_2_end.png",
     "sockets": ["0", "0", "p2", "0"],
-    "rotationVariants": [90, 270]
+    "rotationVariants": [90, 270],
+    "type": "obstacle"
   },
   {
     "name": "pink_2_curve.png",
     "sockets": ["0", "p2", "p2", "0"],
-    "rotationVariants": [0, 90, 180, 270]
+    "rotationVariants": [0, 90, 180, 270],
+    "type": "obstacle"
   },
   {
     "name": "pink_2_t.png",
     "sockets": ["p2", "0", "p2", "p2"],
-    "rotationVariants": [90, 270]
+    "rotationVariants": [90, 270],
+    "type": "obstacle"
   },
   {
     "name": "pink_2_cross.png",
     "sockets": ["p2", "p2", "p2", "p2"],
-    "rotationVariants": [0]
+    "rotationVariants": [0],
+    "type": "obstacle"
   },
   {
     "name": "pink_2to1.png",
     "sockets": ["p2", "0", "p1", "0"],
-    "rotationVariants": [90, 270]
+    "rotationVariants": [90, 270],
+    "type": "obstacle"
   },
   {
     "name": "pink_1_t.png",
     "sockets": ["0", "p1", "p1", "p1"],
-    "rotationVariants": [0, 180]
+    "rotationVariants": [0, 180],
+    "type": "obstacle"
   },
   {
     "name": "pink_1_cross.png",
     "sockets": ["p1", "p1", "p1", "p1"],
-    "rotationVariants": [0]
+    "rotationVariants": [0],
+    "type": "obstacle"
   },
   {
     "name": "blue_2_pink_2_cross.png",

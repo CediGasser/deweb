@@ -84,7 +84,6 @@
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
-    color: #444;
   }
   input[type='text'] {
     width: 80%;

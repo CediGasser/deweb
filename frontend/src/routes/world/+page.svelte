@@ -8,9 +8,10 @@
   import { setPlayerContext } from './PlayerContext'
   import { io } from 'socket.io-client'
   import { PUBLIC_BACKEND_URL } from '$env/static/public'
+  import { GRID_HEIGHT, GRID_WIDTH } from '../../../../shared/constants'
 
   let playerInfo: Player = $state({} as Player)
-  let tiles: any[] = $state([])
+  let tiles: SerializedTile[] = $state([])
   let otherPlayers: Player[] = $state([])
 
   const socket = io(PUBLIC_BACKEND_URL)
@@ -44,18 +45,53 @@
   })
 
   async function handleKeydown(event: KeyboardEvent) {
+    const newPosition = { ...playerInfo.position }
     if (event.key === 'ArrowUp' || event.key === 'w') {
-      playerInfo.position.y -= 1
+      newPosition.y -= 1
     } else if (event.key === 'ArrowDown' || event.key === 's') {
-      playerInfo.position.y += 1
+      newPosition.y += 1
     } else if (event.key === 'ArrowLeft' || event.key === 'a') {
-      playerInfo.position.x -= 1
+      newPosition.x -= 1
     } else if (event.key === 'ArrowRight' || event.key === 'd') {
-      playerInfo.position.x += 1
+      newPosition.x += 1
     }
+
+    // Check if the new position is valid
+    if (!canMoveTo(newPosition)) {
+      return // Invalid move, do nothing
+    }
+
+    // Update player position
+    playerInfo.position = newPosition
 
     // Fetch new tiles based on the updated position
     await fetchTiles(playerInfo.position)
+  }
+
+  function canMoveTo(position: Position): boolean {
+    const tile = tiles.find(
+      (cell) => cell.x === position.x && cell.y === position.y
+    )?.tile
+
+    const playerThere = otherPlayers.some(
+      (player) =>
+        player.position.x === position.x && player.position.y === position.y
+    )
+
+    return !!(
+      // Check if the position is within bounds
+      (
+        position.x >= 0 &&
+        position.y >= 0 &&
+        position.x < GRID_WIDTH &&
+        position.y < GRID_HEIGHT &&
+        // Check if the tile exists (not a wall or obstacle)
+        tile &&
+        tile.type !== 'obstacle' &&
+        // Check if no other player is already at the position
+        !playerThere
+      )
+    )
   }
 
   async function fetchPlayerInfo() {
