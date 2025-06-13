@@ -38,6 +38,7 @@
       {@const offsetX = (tile.x - posX) * TILE_SIZE - TILE_SIZE / 2}
       {@const offsetY = (tile.y - posY) * TILE_SIZE - TILE_SIZE / 2}
       <img
+        class="offset-element"
         style="--rotation: {tile.tile
           .rotation}deg; --offset-x: {offsetX}px; --offset-y: {offsetY}px;"
         src="/wfc-images/{tile.tile.name}"
@@ -49,7 +50,7 @@
       {@const offsetX = -TILE_SIZE / 2}
       {@const offsetY = -TILE_SIZE / 2}
       <img
-        class="player"
+        class="player offset-element"
         style="--rotation: 0deg; --offset-x: {offsetX}px; --offset-y: {offsetY}px;"
         src="/player.png"
         alt="Player {player.name}"
@@ -60,12 +61,13 @@
         (otherPlayer.position.x - posX) * TILE_SIZE - TILE_SIZE / 2}
       {@const offsetY =
         (otherPlayer.position.y - posY) * TILE_SIZE - TILE_SIZE / 2}
-      <img
-        class="other-player"
+      <div
+        data-name={otherPlayer.name}
+        class="other-player offset-element"
         style="--rotation: 0deg; --offset-x: {offsetX}px; --offset-y: {offsetY}px;"
-        src="/player.png"
-        alt="Other Player"
-      />
+      >
+        <img src="/player.png" alt="Other Player" />
+      </div>
     {/each}
     <div class="vignete-overlay"></div>
   </div>
@@ -111,16 +113,37 @@
 
   img {
     position: absolute;
-    width: 64px;
-    height: 64px;
-    transform: translateX(var(--offset-x)) translateY(var(--offset-y))
-      rotate(var(--rotation));
     image-rendering: pixelated;
-    transition: transform 0.1s ease-in-out;
     z-index: 0;
+    height: 100%;
+    width: 100%;
   }
 
   img.player {
     z-index: 1;
+  }
+
+  .offset-element {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    transform: translateX(var(--offset-x)) translateY(var(--offset-y))
+      rotate(var(--rotation));
+    transition: transform 0.1s ease-in-out;
+  }
+
+  .other-player::after {
+    content: attr(data-name);
+    position: absolute;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 12px;
+    pointer-events: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 2px 4px;
+    border-radius: 4px;
+    opacity: 0.8;
   }
 </style>
