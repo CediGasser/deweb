@@ -19,7 +19,24 @@ export class GameWorld {
     console.info(
       `Generating world with dimensions ${this.grid.width}x${this.grid.height}...`
     )
-    this.engine.collapse()
+    let retries = 0
+    while (retries < 20) {
+      try {
+        this.engine.collapse()
+        break // If collapse succeeds, exit the loop
+      } catch {
+        console.warn(`World generation ${retries} failed, retrying...`)
+        this.grid = new Grid(
+          this.grid.width,
+          this.grid.height,
+          this.tileSet.tiles
+        )
+        this.engine = new WfcEngine(this.grid)
+        // Reset the grid and engine for a fresh start
+        retries++
+        continue // Retry if collapse fails
+      }
+    }
     console.info('World generation complete.')
   }
 
