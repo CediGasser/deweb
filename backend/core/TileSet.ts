@@ -5,6 +5,7 @@ export interface RawTile {
   sockets: [string, string, string, string] // [top, right, bottom, left]
   rotationVariants: number[]
   type?: string
+  occurance?: number // Relative frequency of this tile
 }
 
 export class TileSet {
@@ -33,13 +34,28 @@ export class TileSet {
     }
 
     return raw.flatMap(
-      ({ name, sockets, rotationVariants, type = 'default' }) =>
-        rotationVariants.map((r) => ({
+      ({
+        name,
+        sockets,
+        rotationVariants,
+        type = 'default',
+        occurance = 1,
+      }) => {
+        const tiles = rotationVariants.map((r) => ({
           name,
           sockets: rotated(sockets, r),
           rotation: r,
           type: type as Tile['type'],
         }))
+
+        const result: Tile[] = []
+
+        // Add multiple instances based on occurance
+        for (let i = 0; i < occurance; i++) {
+          result.push(...tiles)
+        }
+        return result
+      }
     )
   }
 }

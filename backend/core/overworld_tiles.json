@@ -3,85 +3,87 @@
     "name": "overworld/tile01.png",
     "sockets": ["g", "g", "g", "g"],
     "rotationVariants": [0],
-    "type": "default"
+    "type": "default",
+    "occurance": 100
   },
   {
     "name": "overworld/tile02.png",
-    "sockets": ["r", "r-g-g", "g", "g-g-r"],
+    "sockets": ["r", "r-r-g", "g", "g-r-r"],
     "rotationVariants": [0],
-    "type": "default"
+    "type": "obstacle"
   },
   {
     "name": "overworld/tile03.png",
-    "sockets": ["r-g-g", "g", "g", "g-g-r"],
+    "sockets": ["r-r-g", "g", "g", "g-r-r"],
     "rotationVariants": [0],
-    "type": "default"
+    "type": "obstacle"
   },
   {
     "name": "overworld/tile04.png",
-    "sockets": ["r", "r-g-g", "g-g-r", "r"],
+    "sockets": ["r", "r-r-g", "g-r-r", "r"],
     "rotationVariants": [0],
-    "type": "default"
+    "type": "obstacle"
   },
   {
     "name": "overworld/tile05.png",
-    "sockets": ["g-g-r", "r-g-g", "g", "g"],
+    "sockets": ["g-r-r", "r-r-g", "g", "g"],
     "rotationVariants": [0],
-    "type": "default"
+    "type": "obstacle"
   },
   {
     "name": "overworld/tile06.png",
-    "sockets": ["r", "r", "r-g-g", "g-g-r"],
+    "sockets": ["r", "r", "r-r-g", "g-r-r"],
     "rotationVariants": [0],
-    "type": "default"
+    "type": "obstacle"
   },
   {
     "name": "overworld/tile07.png",
-    "sockets": ["r-g-g", "g", "g-g-r", "r"],
+    "sockets": ["r-r-g", "g", "g-r-r", "r"],
     "rotationVariants": [0],
-    "type": "default"
+    "type": "obstacle"
   },
   {
     "name": "overworld/tile08.png",
-    "sockets": ["g", "g", "g-g-r", "r-g-g"],
+    "sockets": ["g", "g", "g-r-r", "r-r-g"],
     "rotationVariants": [0],
-    "type": "default"
+    "type": "obstacle"
   },
   {
     "name": "overworld/tile09.png",
-    "sockets": ["r-g-g", "g-g-r", "r", "r"],
+    "sockets": ["r-r-g", "g-r-r", "r", "r"],
     "rotationVariants": [0],
-    "type": "default"
+    "type": "obstacle"
   },
   {
     "name": "overworld/tile10.png",
-    "sockets": ["g-g-r", "r", "r-g-g", "g"],
+    "sockets": ["g-r-r", "r", "r-r-g", "g"],
     "rotationVariants": [0],
-    "type": "default"
+    "type": "obstacle"
   },
   {
     "name": "overworld/tile11.png",
-    "sockets": ["g", "g-g-r", "r-g-g", "g"],
+    "sockets": ["g", "g-r-r", "r-r-g", "g"],
     "rotationVariants": [0],
-    "type": "default"
+    "type": "obstacle"
   },
   {
     "name": "overworld/tile12.png",
-    "sockets": ["g-g-r", "r", "r", "r-g-g"],
+    "sockets": ["g-r-r", "r", "r", "r-r-g"],
     "rotationVariants": [0],
-    "type": "default"
+    "type": "obstacle"
   },
   {
     "name": "overworld/tile13.png",
-    "sockets": ["g", "g-g-r", "r", "r-g-g"],
+    "sockets": ["g", "g-r-r", "r", "r-r-g"],
     "rotationVariants": [0],
-    "type": "default"
+    "type": "obstacle"
   },
   {
     "name": "overworld/tile14.png",
     "sockets": ["r", "r", "r", "r"],
     "rotationVariants": [0],
-    "type": "obstacle"
+    "type": "obstacle",
+    "occurance": 1
   },
   {
     "name": "overworld/tile15.png",
@@ -139,7 +141,7 @@
   },
   {
     "name": "overworld/tile26.png",
-    "sockets": ["r-w-r", "r-g-g", "g-w-g", "g-g-r"],
+    "sockets": ["r-w-r", "r-r-g", "g-w-g", "g-r-r"],
     "rotationVariants": [0],
     "type": "obstacle"
   },

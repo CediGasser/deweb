@@ -23,10 +23,30 @@ export class PlayerManager {
     // Create random starting position for the player
     const position: Position = { x: 0, y: 0 } // Default starting position
 
-    // Ensure the position is within the bounds of the game world grid
-    const grid = this.gameWorld.getGrid()
-    position.x = Math.floor(Math.random() * grid.width)
-    position.y = Math.floor(Math.random() * grid.height)
+    // Brute force a random position within the game world until we find a valid one
+    for (let attempts = 0; attempts < 100; attempts++) {
+      // Ensure the position is within the bounds of the game world grid
+      const grid = this.gameWorld.getGrid()
+      position.x = Math.floor(Math.random() * grid.width)
+      position.y = Math.floor(Math.random() * grid.height)
+
+      // Check if the position is valid (not occupied and within view radius)
+      if (
+        this.players.values().some((player) => {
+          return (
+            player.position.x === position.x && player.position.y === position.y
+          )
+        })
+      )
+        continue
+
+      // Check that cell is not an obstacle
+      const cell = grid.get(position.x, position.y)
+      if (cell && cell.length === 1) {
+        // If the cell has valid tiles, we can use this position
+        if (cell[0].type !== 'obstacle') break
+      }
+    }
 
     const player: Player = {
       id,
