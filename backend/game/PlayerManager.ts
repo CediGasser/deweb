@@ -1,5 +1,5 @@
-import { VIEW_RADIUS, IDLE_TIMEOUT } from '../../shared/constants.ts'
-import type { Position } from '../../shared/types.ts'
+import { IDLE_TIMEOUT } from '../shared/constants.ts'
+import type { Position } from '../shared/types.ts'
 import type { GameWorld } from './GameWorld.ts'
 
 interface Player {

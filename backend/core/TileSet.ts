@@ -1,4 +1,4 @@
-import { Socket, Tile } from '../../shared/types.ts'
+import { Socket, Tile } from '../shared/types.ts'
 
 export interface RawTile {
   name: string

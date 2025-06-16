@@ -1,17 +1,18 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
+import { compress } from 'hono/compress'
 import { getCookie, setCookie } from 'hono/cookie'
 import { GameWorld } from './game/GameWorld.ts'
 import { type RawTile, TileSet } from './core/TileSet.ts'
-import directedTiles from './core/directed_tiles.json' with { type: 'json' }
 import overworldTiles from './core/overworld_tiles.json' with { type: 'json' }
 import { PlayerManager } from "./game/PlayerManager.ts";
-import { GRID_HEIGHT, GRID_WIDTH } from "../shared/constants.ts";
+import { GRID_HEIGHT, GRID_WIDTH } from "./shared/constants.ts";
 import { Server } from "https://deno.land/x/socket_io@0.2.1/mod.ts";
 
 
 const app = new Hono()
 app.use('*', cors({ origin: ['http://localhost:5173'], credentials: true }))
+app.use(compress())
 
 //const tileSet = new TileSet(directedTiles as RawTile[])
 const tileSet = new TileSet(overworldTiles as RawTile[])
@@ -40,7 +41,8 @@ io.on('connection', (socket) => {
 });
 
 app.get('/api/player-info', (c) => {
-  const playerId = getCookie(c, 'playerId')
+  const playerId = c.req.header('X-Player-ID') || getCookie(c, 'playerId')
+
   if (!playerId) {
     return c.json({ error: 'PlayerID Cookie not set' }, 404)
   }
@@ -88,7 +90,7 @@ app.post('/api/create-player', (c) => {
 
 app.post('/api/load-chunk', async (c) => {
   const { x, y } = (await c.req.json()) as { x: string, y: string }
-  const playerId = getCookie(c, 'playerId')
+  const playerId = c.req.header('X-Player-ID') || getCookie(c, 'playerId')
 
   const position = {
     x: parseInt(x, 10),

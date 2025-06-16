@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { Player, SerializedTile } from '../../../../shared/types'
-  import { TILE_SIZE, VIEW_RADIUS } from '../../../../shared/constants'
+  import type { Player, SerializedTile } from '$lib/types'
+  import { TILE_SIZE, VIEW_RADIUS } from '$lib/constants'
   import { getPlayerContext } from './PlayerContext'
 
   interface Props {

@@ -1,14 +1,11 @@
 <script lang="ts">
-  import type {
-    Player,
-    Position,
-    SerializedTile,
-  } from '../../../../shared/types'
+  import type { Player, Position, SerializedTile } from '$lib/types'
   import WfcComponent from './WfcComponent.svelte'
   import { setPlayerContext } from './PlayerContext'
   import { io } from 'socket.io-client'
+  import { GRID_HEIGHT, GRID_WIDTH } from '$lib/constants'
+  import { getPlayerInfo, loadChunk } from '$lib/api'
   import { PUBLIC_BACKEND_URL } from '$env/static/public'
-  import { GRID_HEIGHT, GRID_WIDTH } from '../../../../shared/constants'
 
   let playerInfo: Player = $state({} as Player)
   let tiles: SerializedTile[] = $state([])
@@ -95,37 +92,15 @@
   }
 
   async function fetchPlayerInfo() {
-    const response = await fetch('/api/player-info')
+    const player = await getPlayerInfo()
 
-    if (response.ok) {
-      const player = await response.json()
-      playerInfo.id = player.id
-      playerInfo.name = player.name
-      playerInfo.position = player.position as Position
-    } else {
-      throw new Error('Failed to fetch player info')
-    }
-  }
-
-  type LoadChunkResponse = {
-    tiles: SerializedTile[]
-    playerPosition: Position
+    playerInfo.id = player.id
+    playerInfo.name = player.name
+    playerInfo.position = player.position as Position
   }
 
   async function fetchTiles(position: Position) {
-    const response = await fetch('/api/load-chunk', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(position),
-    })
-
-    if (response.ok) {
-      tiles = ((await response.json()) as LoadChunkResponse).tiles
-    } else {
-      throw new Error('Failed to fetch tiles')
-    }
+    tiles = (await loadChunk(position)).tiles
   }
 </script>
 

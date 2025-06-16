@@ -5,7 +5,6 @@ WORKDIR /app
 
 # Copy source
 COPY ./backend .
-COPY ./shared .
 
 # Compile the main app
 RUN deno cache main.ts

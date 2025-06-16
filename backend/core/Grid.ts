@@ -1,4 +1,4 @@
-import type { Position, Tile } from '../../shared/types.ts'
+import type { Position, Tile } from '../shared/types.ts'
 
 export type Cell = Tile[]
 

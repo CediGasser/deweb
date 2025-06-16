@@ -1,8 +1,8 @@
 import { TileSet } from '../core/TileSet.ts'
 import { Grid } from '../core/Grid.ts'
 import { WfcEngine } from '../core/WfcEngine.ts'
-import { Position, SerializedTile } from '../../shared/types.ts'
-import { VIEW_RADIUS } from '../../shared/constants.ts'
+import { Position, SerializedTile } from '../shared/types.ts'
+import { VIEW_RADIUS } from '../shared/constants.ts'
 
 export class GameWorld {
   private tileSet: TileSet

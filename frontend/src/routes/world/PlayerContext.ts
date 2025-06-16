@@ -1,5 +1,5 @@
 import { getContext, setContext } from 'svelte'
-import type { Player } from '../../../../shared/types'
+import type { Player } from '$lib/types'
 
 const key = {}
 

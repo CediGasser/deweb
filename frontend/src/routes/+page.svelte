@@ -1,49 +1,21 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
+  import { createPlayer, getPlayerInfo } from '$lib/api'
 
   let playerName = $state('')
 
-  let playerInfo: null | any = fetchPlayerInfo()
-
-  async function fetchPlayerInfo() {
-    const response = await fetch('/api/player-info')
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch player info')
-    }
-
-    return await response.json()
-  }
-
-  const createPlayerEndpoint = '/api/create-player?'
+  let playerInfo: null | any = getPlayerInfo()
 
   async function startGame() {
     await goto('/world')
   }
 
-  async function createPlayer() {
-    if (playerName.trim()) {
-      const searchParams = new URLSearchParams({
-        name: playerName.trim(),
-      }).toString()
-      // Add navigation or game start logic here
-      try {
-        const response = await fetch(createPlayerEndpoint + searchParams, {
-          method: 'POST',
-        })
+  async function handlePlay() {
+    const player = await createPlayer(playerName)
 
-        if (!response.ok) {
-          throw new Error('Failed to create player')
-        }
-
-        const data = await response.json()
-        console.log('Player created:', data)
-
-        // Navigate to the game world or next step
-        await goto('/world')
-      } catch (error) {
-        console.error('Error creating player:', error)
-      }
+    if (player) {
+      // Navigate to the game world or next step
+      await goto('/world')
     }
   }
 </script>
@@ -63,7 +35,7 @@
       placeholder="Enter your name"
       autocomplete="off"
     />
-    <button onclick={createPlayer} disabled={!playerName.trim()}> Play </button>
+    <button onclick={handlePlay} disabled={!playerName.trim()}> Play </button>
   {/await}
 </main>
 

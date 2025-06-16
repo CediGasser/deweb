@@ -1,4 +1,4 @@
-import { Position } from '../../shared/types.ts'
+import { Position } from '../shared/types.ts'
 
 type CellEntry = {
   pos: Position

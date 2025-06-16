@@ -1,5 +1,5 @@
 import { Grid } from './Grid.ts'
-import { Position, RelativePosition, Socket } from '../../shared/types.ts'
+import { Position, RelativePosition, Socket } from '../shared/types.ts'
 import { EntropyQueue } from './EntropyQueue.ts'
 
 export class WfcEngine {
