@@ -3,6 +3,8 @@ node_modules
 # Output
 /frontend/.svelte-kit
 /frontend/build
+/frontend/node_module:wq
+
 
 # OS
 .DS_Store

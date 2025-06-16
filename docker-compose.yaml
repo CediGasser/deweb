@@ -1,0 +1,21 @@
+services:
+  frontend:
+    build:
+      context: github.com/cedigasser/deweb
+      dockerfile: Dockerfile.frontend
+    container_name: deweb-frontend
+    expose:
+      - 443
+    environment:
+      - PUBLIC_BACKEND_URL="http://deweb-backend:8080"
+    ports:
+      - '443:443'
+      - '80:80'
+
+  backend:
+    build:
+      context: github.com/cedigasser/deweb
+      dockerfile: Dockerfile.backend
+    container_name: deweb-backend
+    expose:
+      - 8080
