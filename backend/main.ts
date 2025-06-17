@@ -62,8 +62,18 @@ app.get('/api/player-info', (c) => {
 })
 
 app.post('/api/create-world', (c) => {
-  gameWorld = new GameWorld(tileSet, GRID_WIDTH, GRID_HEIGHT)
-  gameWorld.generateWorld()
+  const newGameWorld = new GameWorld(tileSet, GRID_WIDTH, GRID_HEIGHT)
+  newGameWorld.generateWorld()
+
+  gameWorld = newGameWorld
+  playerManager.resetPlayers(gameWorld)
+
+  console.info('🌍 New game world created with dimensions:', GRID_WIDTH, 'x', GRID_HEIGHT)
+
+  io.emit('worldCreated', {
+    width: GRID_WIDTH,
+    height: GRID_HEIGHT,
+  })
 
   return c.json({
     message: 'World created successfully',

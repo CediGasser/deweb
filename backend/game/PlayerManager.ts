@@ -119,6 +119,16 @@ export class PlayerManager {
     player.lastUpdate = new Date()
   }
 
+  public resetPlayers(gameWorld: GameWorld): void {
+    this.gameWorld = gameWorld
+    this.players.clear()
+
+    // Reset player positions to a default state
+    for (const player of this.players.values()) {
+      this.addPlayer(player.id, player.name)
+    }
+  }
+
   public getPlayer(id: string): Player | undefined {
     return this.players.get(id)
   }

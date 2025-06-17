@@ -1,14 +1,22 @@
-import { PUBLIC_BACKEND_URL } from '$env/static/public'
 import type { Player, Position, SerializedTile } from './types'
+import { dev } from '$app/environment'
+
+let apiBaseUrl = 'http://localhost:8000'
+
+if (!dev) {
+  // Use the current origin in production
+  apiBaseUrl = ''
+}
+
+export const BASE_URL = apiBaseUrl
 
 const callApi = async (path: string, options: RequestInit = {}) => {
-  const baseUrl = PUBLIC_BACKEND_URL || 'http://localhost:8000'
-  const url = new URL(path, baseUrl)
+  const url = apiBaseUrl + path
 
   // Get player ID from local storage and set custom header
   const playerId = localStorage.getItem('playerId')
 
-  const response = await fetch(url.toString(), {
+  const response = await fetch(url, {
     ...options,
     headers: {
       'Content-Type': 'application/json',

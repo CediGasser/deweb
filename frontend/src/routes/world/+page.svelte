@@ -5,13 +5,13 @@
   import { io } from 'socket.io-client'
   import { GRID_HEIGHT, GRID_WIDTH } from '$lib/constants'
   import { getPlayerInfo, loadChunk } from '$lib/api'
-  import { PUBLIC_BACKEND_URL } from '$env/static/public'
+  import { BASE_URL } from '$lib/api'
 
   let playerInfo: Player = $state({} as Player)
   let tiles: SerializedTile[] = $state([])
   let otherPlayers: Player[] = $state([])
 
-  const socket = io(PUBLIC_BACKEND_URL)
+  const socket = io(BASE_URL ?? undefined)
 
   socket.on('playerMoved', (data: Player) => {
     const playerIndex = otherPlayers.findIndex((p) => p.id === data.id)

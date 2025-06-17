@@ -3,8 +3,6 @@ services:
     build:
       context: github.com/cedigasser/deweb
       dockerfile: Dockerfile.frontend
-      args:
-        PUBLIC_BACKEND_URL: http://localhost
     container_name: deweb-frontend
     expose:
       - 443
