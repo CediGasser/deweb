@@ -40,6 +40,10 @@ io.on('connection', (socket) => {
   });
 });
 
+app.get('/api/health', (c) => {
+  return c.json({ status: 'ok' })
+})
+
 app.get('/api/player-info', (c) => {
   const playerId = c.req.header('X-Player-ID') || getCookie(c, 'playerId')
 
